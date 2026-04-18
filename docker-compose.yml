@@ -10,10 +10,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./migrations/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
-      - ./migrations/02_index.sql:/docker-entrypoint-initdb.d/02_index.sql
-      - ./migrations/03_seed.sql:/docker-entrypoint-initdb.d/03_seed.sql
-      - ./migrations/04_views.sql:/docker-entrypoint-initdb.d/04_views.sql
-      - ./migrations/05_add_proveedor.sql:/docker-entrypoint-initdb.d/05_add_proveedor.sql
+      - ./migrations/02_roles.sql:/docker-entrypoint-initdb.d/02_roles.sql
 
 volumes:
   postgres_data:
