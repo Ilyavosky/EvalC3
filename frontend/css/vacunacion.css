@@ -1,0 +1,99 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --red:    #c85048;
+    --red-dk: #a82028;
+    --blue:   #70b8f0;
+    --light:  #f0f0f8;
+    --mid:    #a8b8c8;
+    --dark:   #18181c;
+    --panel:  #ffffff;
+  }
+  body { font-family: 'Nunito', sans-serif; background: var(--light); min-height: 100vh; color: var(--dark); }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,.018) 3px, rgba(0,0,0,.018) 6px);
+    pointer-events: none; z-index: 999;
+  }
+  .topbar {
+    background: linear-gradient(135deg, var(--red-dk) 0%, var(--red) 100%);
+    padding: 0 32px; height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 3px 0 var(--red-dk), 0 4px 16px rgba(0,0,0,.25);
+    position: sticky; top: 0; z-index: 50;
+  }
+  .topbar-brand { display: flex; align-items: center; gap: 12px; }
+  .topbar-brand .cross {
+    width: 32px; height: 32px;
+    background: rgba(255,255,255,.2); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .topbar-brand .cross svg { width: 18px; height: 18px; }
+  .topbar-brand span { font-family: 'Press Start 2P', monospace; font-size: 9px; color: #fff; letter-spacing: 1px; line-height: 1.6; }
+  .topbar-right { display: flex; align-items: center; gap: 16px; }
+  .session-badge { font-size: 11px; font-weight: 700; color: rgba(255,255,255,.8); background: rgba(255,255,255,.15); padding: 5px 12px; border-radius: 20px; }
+  .topbar-nav { display: flex; gap: 8px; }
+  .topbar-nav a { padding: 8px 14px; font-size: 12px; font-weight: 700; color: rgba(255,255,255,.75); text-decoration: none; border-radius: 6px; transition: background .2s, color .2s; }
+  .topbar-nav a:hover { background: rgba(255,255,255,.15); color: #fff; }
+  .topbar-nav a.active { background: rgba(255,255,255,.2); color: #fff; }
+  .stats-strip { background: var(--panel); border-bottom: 1px solid #e8eaf2; padding: 0 32px; display: flex; gap: 0; }
+  .stat-item { padding: 18px 32px; border-right: 1px solid #e8eaf2; display: flex; flex-direction: column; gap: 4px; min-width: 160px; }
+  .stat-item:first-child { padding-left: 0; }
+  .stat-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--mid); }
+  .stat-value { font-family: 'Press Start 2P', monospace; font-size: 20px; }
+  .stat-value.red { color: var(--red); }
+  .stat-value.green { color: #389048; }
+  .stat-sub { font-size: 12px; color: var(--mid); }
+  .page { max-width: 1040px; margin: 0 auto; padding: 36px 24px 60px; }
+  .page-title { font-family: 'Press Start 2P', monospace; font-size: 11px; color: var(--red-dk); letter-spacing: 1px; margin-bottom: 6px; }
+  .page-subtitle { font-size: 14px; color: var(--mid); margin-bottom: 28px; }
+  .toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+  .cache-badge {
+    font-size: 11px; font-weight: 800;
+    padding: 6px 14px; border-radius: 20px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px; letter-spacing: .5px;
+  }
+  .cache-badge.hit  { background: #edfaee; color: #38924a; border: 2px solid #38924a; }
+  .cache-badge.miss { background: #fff0ee; color: var(--red); border: 2px solid var(--red); }
+  .cache-badge.loading { background: #f0f0f8; color: var(--mid); border: 2px solid var(--mid); }
+  .latency { font-size: 12px; font-weight: 700; color: var(--mid); }
+  .btn-refresh {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, var(--blue) 0%, #4e9fd4 100%);
+    color: #fff; font-family: 'Press Start 2P', monospace;
+    font-size: 8px; letter-spacing: .5px;
+    border: none; border-radius: 8px; cursor: pointer;
+    box-shadow: 0 3px 0 #4080b0, 0 4px 12px rgba(70,130,180,.3);
+    transition: transform .1s, box-shadow .1s; white-space: nowrap;
+  }
+  .btn-refresh:hover { transform: translateY(-2px); box-shadow: 0 5px 0 #4080b0, 0 6px 16px rgba(70,130,180,.35); }
+  .btn-refresh:active { transform: translateY(2px); box-shadow: 0 1px 0 #4080b0; }
+  .table-wrap { background: var(--panel); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,.07), 0 0 0 1px #e8eaf2; }
+  table { width: 100%; border-collapse: collapse; }
+  thead { background: linear-gradient(135deg, var(--red-dk) 0%, var(--red) 100%); }
+  thead th { padding: 14px 16px; font-family: 'Press Start 2P', monospace; font-size: 7.5px; color: #fff; letter-spacing: .5px; text-align: left; font-weight: 400; white-space: nowrap; }
+  tbody tr { border-bottom: 1px solid #eeeef6; transition: background .15s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(200,80,72,.03); }
+  tbody td { padding: 14px 16px; font-size: 13px; font-weight: 600; color: var(--dark); vertical-align: middle; }
+  tbody td.muted { color: var(--mid); font-weight: 400; font-size: 12px; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 800; letter-spacing: .3px; }
+  .badge-sin-vacuna { background: #fff0ee; color: var(--red); border: 1px solid rgba(200,80,72,.2); }
+  .badge-vencida { background: #fffbea; color: #b89000; border: 1px solid rgba(184,144,0,.2); }
+  .empty-state { text-align: center; padding: 64px 24px; color: var(--mid); }
+  .empty-state .pb { font-size: 48px; margin-bottom: 16px; }
+  .empty-state p { font-family: 'Press Start 2P', monospace; font-size: 9px; line-height: 2; }
+  .loading { text-align: center; padding: 40px; color: var(--mid); font-family: 'Press Start 2P', monospace; font-size: 9px; }
+  #toast {
+    position: fixed; bottom: 28px; right: 28px;
+    background: var(--dark); color: #fff;
+    padding: 14px 22px; border-radius: 10px;
+    font-family: 'Press Start 2P', monospace; font-size: 8px; line-height: 2;
+    box-shadow: 0 8px 24px rgba(0,0,0,.3);
+    transform: translateY(80px); opacity: 0;
+    transition: transform .35s cubic-bezier(.34,1.56,.64,1), opacity .3s;
+    z-index: 200; pointer-events: none;
+    border-left: 4px solid #38b24a;
+  }
+  #toast.show { transform: translateY(0); opacity: 1; }

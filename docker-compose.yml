@@ -1,0 +1,28 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: centro_pokemon_db
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "5439:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./migrations/02_roles.sql:/docker-entrypoint-initdb.d/02_roles.sql
+      - ./migrations/03_procedures.sql:/docker-entrypoint-initdb.d/03_procedures.sql
+      - ./migrations/04_triggers.sql:/docker-entrypoint-initdb.d/04_triggers.sql
+      - ./migrations/05_views.sql:/docker-entrypoint-initdb.d/05_views.sql
+      - ./migrations/06_rls.sql:/docker-entrypoint-initdb.d/06_rls.sql
+      - ./migrations/07_grants.sql:/docker-entrypoint-initdb.d/07_grants.sql
+
+  redis:
+    image: redis:7
+    container_name: centro_pokemon_redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_data:
