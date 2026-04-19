@@ -1,65 +1,54 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Centro Pokémon – Login</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="css/login.css">
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+setTimeout(() => {
+  const splash = document.getElementById('splash');
+  const dlg    = document.getElementById('dialogue');
+  splash.classList.add('fade-out');
+  setTimeout(() => {
+    splash.style.display = 'none';
+    dlg.style.display    = 'none';
+    document.getElementById('main').style.display = 'flex';
+  }, 800);
+}, 4200);
 
-</head>
-<body>
+document.getElementById('btn-login').addEventListener('click', async () => {
+  const rol    = document.getElementById('role').value;
+  const vet_id = parseInt(document.getElementById('vet_id').value) || 0;
+  const errMsg = document.getElementById('error-msg');
+  const btn    = document.getElementById('btn-login');
 
-<div id="heal-flash"></div>
+  if (!rol) {
+    errMsg.textContent = 'Selecciona un rol para continuar';
+    errMsg.style.display = 'block';
+    return;
+  }
 
-<div id="splash">
-  <div class="pokeball-wrap">
-    <img src="uploads/pokeball.gif" alt="Pokéball">
-  </div>
-  <div class="splash-title">CENTRO<br>POKÉMON<br>VET</div>
-</div>
+  if (rol === 'rol_veterinario' && vet_id <= 0) {
+    errMsg.textContent = 'El veterinario debe ingresar su ID';
+    errMsg.style.display = 'block';
+    return;
+  }
 
-<div id="dialogue">
-  <p>¡Bienvenido/a al Centro Pokémon!<br>Por favor, identifíquese para continuar.<span class="cursor"></span></p>
-</div>
+  errMsg.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'CONECTANDO...';
 
-<div id="main">
-  <div class="pc-header">
-    <div class="cross">
-      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="11" y="1" width="6" height="26" rx="2" fill="white"/>
-        <rect x="1" y="11" width="26" height="6" rx="2" fill="white"/>
-      </svg>
-    </div>
-    <h1>CENTRO POKÉMON</h1>
-    <p>Sistema de Veterinaria Pokémon</p>
-  </div>
+  try {
+    const res = await fetch(`${CONFIG.API_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ rol, vet_id })
+    });
 
-  <div class="login-card">
-    <div class="form-group">
-      <label for="role">Rol</label>
-      <select id="role" name="role">
-        <option value="">— Seleccionar rol —</option>
-        <option value="rol_veterinario"><i class="fa-solid fa-user-doctor"></i> Veterinario</option>
-        <option value="rol_recepcionista"><i class="fa-solid fa-bell-concierge"></i> Recepcionista</option>
-        <option value="rol_administrador"><i class="fa-solid fa-user-tie"></i> Administrador</option>
-      </select>
-    </div>
+    if (!res.ok) throw new Error('Error al conectar');
 
-    <div class="form-group">
-      <label for="vet_id">ID de Veterinario</label>
-      <input type="number" id="vet_id" name="vet_id" placeholder="Ej: 1" min="1">
-    </div>
+    const data = await res.json();
+    sessionStorage.setItem('rol', data.rol);
+    sessionStorage.setItem('vet_id', data.vet_id);
+    window.location.href = 'busqueda.html';
 
-    <button class="btn-login" id="btn-login">INGRESAR AL SISTEMA</button>
-    <div class="error-msg" id="error-msg">Selecciona un rol para continuar</div>
-
-  </div>
-</div>
-
-
-<script src="js/config.js"></script>
-<script src="js/login.js"></script>
-</body>
-</html>
+  } catch (e) {
+    errMsg.textContent = 'No se pudo conectar con el servidor';
+    errMsg.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'INGRESAR AL SISTEMA';
+  }
+});
